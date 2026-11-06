@@ -1,0 +1,33 @@
+Mục tiêu bài,Mô tả năng lực,Trợ lý AI học tập,Nghiên cứu hệ thống AI cảnh báo sớm sức khỏe tinh thần,Dr.Plant AI – Bác sĩ cây trồng cho nông nghiệp đô thị
+,,"Một chatbot thông minh sử dụng AI để trả lời các câu hỏi liên quan đến bài học, giống như một trợ giảng ảo. Ví dụ, trợ lý AI có thể trả lời câu hỏi về Toán hoặc Văn bằng cách tìm thông tin trong tài liệu học tập","Nghiên cứu giải pháp xây dựng công cụ AI phân tích nội dung văn bản (ví dụ: bài viết, nhật ký, tin nhắn) để phát hiện sớm các dấu hiệu trầm cảm, lo âu ở học sinh.","Xây dựng một hệ thống AI hỗ trợ nhận diện tình trạng sức khỏe cây trồng qua hình ảnh lá (ví dụ: sâu bệnh, thiếu nước, thiếu dinh dưỡng...) nhằm hỗ trợ người dân trồng cây tại nhà, trường học, ban công, sân thượng,..."
+MTB 1.1.a: Thực hiện được các cuộc phỏng vấn với các bên liên quan và tổng hợp dữ liệu để xây dựng một bản tóm tắt nhu cầu người dùng (user story) chi tiết.,"Giao tiếp & tổng hợp thông tin, Xác định các bên liên quan, Phân tích nhu cầu người dùng, Xây dựng user story",TRUE,FALSE,FALSE
+MTB 1.1.b: Phân tích được các yêu cầu về phần cứng và kiến trúc hệ thống cho một mô hình học có giám sát.,"Phân tích kỹ thuật hệ thống, kiến trúc phần cứng & mô hình AI",TRUE,FALSE,FALSE
+"MTB 1.1.c: Thiết kế và quản lý được một quy trình làm việc theo phương pháp Agile, bao gồm việc nhận diện và lên kế hoạch xử lý các rủi ro tiềm ẩn trong dự án.","Lập kế hoạch, quản lý dự án theo Agile, xác định rủi ro, Thiết kế quy trình làm việc",TRUE,FALSE,FALSE
+MTB 1.1.d: Sử dụng được AI để tự phản biện về các giả định ban đầu của mình trong giai đoạn lập kế hoạch.,"Sử dụng AI để phản biện & tự đánh giá, Tư duy phản biện",TRUE,FALSE,FALSE
+"MTB 1.2.a: Thiết kế được một chuỗi các câu lệnh (prompt chain) phức tạp để dẫn dắt AI thực hiện một nhiệm vụ nhiều bước, đồng thời tối ưu hóa các câu lệnh đó để giảm thiểu lỗi kỹ thuật.","Thiết kế prompt chain phức tạp, Tối ưu hóa câu lệnh AI, Kỹ năng kỹ thuật AI nâng cao",FALSE,FALSE,FALSE
+MTB 1.2.b: Sử dụng được một chuỗi các công cụ AI chuyên biệt một cách tuần tự để hoàn thành một nhiệm vụ phức tạp.,"Sử dụng công cụ AI tuần tự, Kỹ năng thực thi nhiệm vụ phức tạp với AI",FALSE,FALSE,FALSE
+MTB 1.2.c: Sử dụng được công cụ AI để tạo ra một sản phẩm video có nội dung gây ảnh hưởng đến một nhóm đối tượng cụ thể.,"Sáng tạo nội dung với AI, Ứng dụng AI cho tác động truyền thông",FALSE,FALSE,FALSE
+MTB 1.2.d: Vận dụng được những ý tưởng mới để đồng kiến tạo với AI một giải pháp có tính nguyên bản về mặt áp dụng.,"Đồng sáng tạo & phát triển ý tưởng mới với AI, Tư duy sáng tạo",FALSE,FALSE,FALSE
+MTB 1.2.e: Phân tích và đánh giá được ranh giới linh hoạt giữa vai trò của con người và vai trò của AI trong một dự án đồng sáng tạo.,"Phân tích vai trò con người với AI, Đánh giá tương tác con người – AI",FALSE,FALSE,FALSE
+MTB 1.2.f: Khám phá và thử nghiệm được các tính năng của một mô hình công nghệ AI mới nổi.,"Khám phá và thử nghiệm công nghệ AI mới, Tư duy thử nghiệm – khám phá",FALSE,FALSE,FALSE
+"MTB 1.3.a: Xây dựng được một bộ tiêu chí đánh giá riêng biệt, phù hợp với một loại AI cụ thể và mục tiêu của dự án.",Xây dựng được bộ tiêu chí đánh giá cho một mô hình AI cụ thể,FALSE,FALSE,FALSE
+"MTB 1.3.b: Đánh giá phản biện được một thiết kế AI dựa trên các tiêu chí đã xây dựng, nhu cầu người dùng và tác động tiềm năng trong tương lai.","Đánh giá phản biện thiết kế AI, Phân tích nhu cầu người dùng, Dự đoán tác động tiềm năng",FALSE,FALSE,FALSE
+MTB 1.3.c: Áp dụng được các quy định của luật pháp quốc tế về quyền riêng tư để phản biện một hệ thống AI.,"Áp dụng luật quyền riêng tư quốc tế, Phản biện hệ thống AI",FALSE,FALSE,FALSE
+MTB 1.3.d: Áp dụng được các quy định về luật sở hữu trí tuệ khi sử dụng một hệ thống AI.,"Áp dụng luật sở hữu trí tuệ, Đảm bảo tuân thủ pháp luật khi dùng AI",FALSE,FALSE,FALSE
+MTB 1.3.e: Phân tích và đề xuất hướng giải quyết cho một tình thế tiến thoái lưỡng nan về đạo đức khi sử dụng một hệ thống AI.,Phân tích tình huống đạo đức và đề xuất giải pháp,FALSE,FALSE,FALSE
+MTB 1.4.a: Đánh giá và xây dựng chiến lược cá nhân để quản lý các tác động của việc sử dụng sai AI lên sức khỏe tinh thần (wellbeing).,"Đánh giá tác động AI lên sức khỏe tinh thần, Quản lý wellbeing cá nhân",FALSE,FALSE,FALSE
+MTB 1.4.b: Cân nhắc và đề xuất được vai trò của bản thân trong việc giảm thiểu tác động môi trường của AI ở quy mô khu vực.,"Đề xuất vai trò cá nhân trong giảm thiểu tác động môi trường, Ý thức bền vững",FALSE,FALSE,FALSE
+MTB 1.4.c: Nhận diện và phân tích được sự thay đổi trong tư duy cá nhân sau một giai đoạn tương tác với AI.,"Nhận diện & phân tích thay đổi tư duy cá nhân, Tư duy phản xạ – tự nhận thức",FALSE,FALSE,FALSE
+MTB 1.4.d: Dự đoán được các xu hướng phát triển của công nghệ AI (ví dụ: computer vision) dựa trên các mô hình hiện có và các bài báo công nghệ.,"Dự đoán xu hướng công nghệ AI, Phân tích dữ liệu công nghệ & báo cáo nghiên cứu",FALSE,FALSE,FALSE
+MTB 2.1.a: Giải thích được cách Big Data được sử dụng để huấn luyện một mô hình học có giám sát.,"Trình bày được ví dụ về Big data và giải thích được mối liên hệ giữa Big data và mô hình học có giám sát, Đặc điểm của mô hình học có giám sát",FALSE,FALSE,FALSE
+MTB 2.1.b: Thu thập và tổ chức được một bộ dữ liệu chứa các biến số rời rạc.,"Thu thập dữ liệu với biến số rời rạc, Tổ chức dữ liệu và mô phỏng xu hướng bằng biểu đồ",FALSE,FALSE,FALSE
+"Mục tiêu bài
+(Sau khi đã tick sẽ hiển thị các MTB đã chọn)",,"MTB 1.1.a: Thực hiện được các cuộc phỏng vấn với các bên liên quan và tổng hợp dữ liệu để xây dựng một bản tóm tắt nhu cầu người dùng (user story) chi tiết.
+MTB 1.1.b: Phân tích được các yêu cầu về phần cứng và kiến trúc hệ thống cho một mô hình học có giám sát.
+MTB 1.1.c: Thiết kế và quản lý được một quy trình làm việc theo phương pháp Agile, bao gồm việc nhận diện và lên kế hoạch xử lý các rủi ro tiềm ẩn trong dự án.
+MTB 1.1.d: Sử dụng được AI để tự phản biện về các giả định ban đầu của mình trong giai đoạn lập kế hoạch.",Chưa lựa chọn,Chưa lựa chọn
+"Năng lực 
+(Sau khi đã tick sẽ hiển thị các năng lực đã chọn)",,"Giao tiếp & tổng hợp thông tin, Xác định các bên liên quan, Phân tích nhu cầu người dùng, Xây dựng user story
+Phân tích kỹ thuật hệ thống, kiến trúc phần cứng & mô hình AI
+Lập kế hoạch, quản lý dự án theo Agile, xác định rủi ro, Thiết kế quy trình làm việc
+Sử dụng AI để phản biện & tự đánh giá, Tư duy phản biện",Chưa lựa chọn,Chưa lựa chọn

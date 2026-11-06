@@ -1,0 +1,6 @@
+{
+  "name": "AI Project Hub K9 - Không Gian Dự Án Cuối Kỳ I",
+  "description": "Cổng đăng ký nhóm, quản lý và không gian làm việc trực tuyến cho dự án kiểm tra cuối kỳ I môn AI Khối 9 với 3 chủ đề và ma trận đánh giá năng lực.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
