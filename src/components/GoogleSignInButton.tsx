@@ -1,7 +1,8 @@
 import React from 'react';
 
 interface GoogleSignInButtonProps {
-  onClick: () => void;
+  onClick?: () => void;
+  type?: 'button' | 'submit' | 'reset';
   text?: string;
   subtext?: string;
   disabled?: boolean;
@@ -10,6 +11,7 @@ interface GoogleSignInButtonProps {
 
 export const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({
   onClick,
+  type = 'button',
   text = 'Sign in with Google',
   subtext,
   disabled = false,
@@ -17,7 +19,7 @@ export const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({
 }) => {
   return (
     <button
-      type="button"
+      type={type}
       onClick={onClick}
       disabled={disabled}
       className={`group relative inline-flex items-center justify-start p-1.5 pr-6 bg-[#4285F4] hover:bg-[#3367D6] active:scale-[0.98] disabled:opacity-50 text-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-200 border border-[#3b78e7] cursor-pointer ${className}`}

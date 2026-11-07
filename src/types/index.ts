@@ -39,11 +39,22 @@ export interface ProjectTopic {
   }[];
 }
 
+export interface MTBRubricLevels {
+  level4: string; // Mức 4 – Vượt
+  level3: string; // Mức 3 – Đạt
+  level2: string; // Mức 2 – Đang hình thành
+  level1: string; // Mức 1 – Chưa đạt
+}
+
 export interface MTBItem {
   id: string; // e.g. "MTB 1.1.a"
   title: string;
-  competencies: string[]; // e.g. ["Giao tiếp & tổng hợp thông tin", "Xác định các bên liên quan", ...]
-  domain: '1.1' | '1.2' | '1.3' | '1.4' | '2.1';
+  criterionTitle: string;
+  competencyDescription: string;
+  steps: string[];
+  competencies: string[]; // e.g. ["Giao tiếp & tổng hợp thông tin", ...]
+  rubric: MTBRubricLevels;
+  domain: '1.1' | '1.2' | '1.3' | '1.4';
   domainLabel: string;
   defaultCheckedTopic1: boolean;
   defaultCheckedTopic2: boolean;

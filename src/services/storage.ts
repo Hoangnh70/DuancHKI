@@ -16,12 +16,12 @@ const EVENT_NAME = 'k9_teams_updated';
 export function getTeams(): Team[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) {
+    if (raw === null) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_SAMPLE_TEAMS));
       return INITIAL_SAMPLE_TEAMS;
     }
     const parsed: Team[] = JSON.parse(raw);
-    if (Array.isArray(parsed) && parsed.length > 0) {
+    if (Array.isArray(parsed)) {
       let needsSave = false;
       const updated = parsed.map(t => {
         if (t.folder && (!t.folder.driveFolderUrl || t.folder.driveFolderUrl.includes('1K9_VSC_') || t.folder.driveFolderUrl.includes('1K9_VINSCHOOL'))) {
@@ -131,13 +131,7 @@ export function createNewTeam(data: {
     isLocked: false,
     classGoogleSheetUrl,
     subfolders,
-    selectedMTBIds: topic?.recommendedMTBIds || [
-      'MTB 1.1.a',
-      'MTB 1.1.b',
-      'MTB 1.1.c',
-      'MTB 1.1.d',
-      'MTB 2.1.a'
-    ],
+    selectedMTBIds: [],
     mtbNotes: {},
     userStories: [],
     promptChain: [],

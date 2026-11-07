@@ -167,15 +167,16 @@ export const ProjectGuidesView: React.FC<ProjectGuidesViewProps> = ({
           </div>
 
           {/* 5-Phase Roadmap: What Students Need to Do */}
+          {/* 5 Phases Roadmap */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
                   <Layers className="w-5 h-5 text-blue-600" />
-                  Lộ trình 5 Giai đoạn: Học sinh cần làm gì?
+                  Lộ trình 5 Bước Triển Khai: Học sinh cần làm gì?
                 </h3>
                 <p className="text-xs text-slate-500">
-                  Thực hiện tuần tự các bước để hoàn thành đầy đủ mục tiêu bài và năng lực K9
+                  Thực hiện tuần tự theo 5 bước rõ ràng để hoàn thành trọn vẹn sản phẩm và đạt điểm tối đa theo Rubric
                 </p>
               </div>
             </div>
@@ -184,16 +185,16 @@ export const ProjectGuidesView: React.FC<ProjectGuidesViewProps> = ({
               {currentTopic.phases.map((phase) => (
                 <div 
                   key={phase.phaseNumber}
-                  className="p-5 rounded-xl border border-slate-200 hover:border-blue-300 bg-white transition-all shadow-2xs"
+                  className="p-5 rounded-2xl border border-slate-200 hover:border-blue-300 bg-white transition-all shadow-2xs"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="w-8 h-8 rounded-lg bg-blue-600 text-white font-bold text-sm flex items-center justify-center shrink-0">
+                    <div className="w-9 h-9 rounded-xl bg-blue-600 text-white font-extrabold text-sm flex items-center justify-center shrink-0 shadow-xs">
                       {phase.phaseNumber}
                     </div>
                     <div className="space-y-3 flex-1">
                       <div>
                         <h4 className="text-sm font-bold text-slate-900">
-                          Giai đoạn {phase.phaseNumber}: {phase.title}
+                          Bước {phase.phaseNumber}: {phase.title}
                         </h4>
                         <p className="text-xs text-slate-600 mt-0.5">
                           {phase.description}
@@ -201,25 +202,27 @@ export const ProjectGuidesView: React.FC<ProjectGuidesViewProps> = ({
                       </div>
 
                       {/* Tasks list */}
-                      <div className="space-y-1.5 bg-slate-50 p-3 rounded-lg border border-slate-100">
+                      <div className="space-y-2 bg-slate-50 p-3.5 rounded-xl border border-slate-100">
                         <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block">
-                          Nhiệm vụ cụ thể của nhóm:
+                          Các việc cụ thể học sinh cần làm trong Bước {phase.phaseNumber}:
                         </span>
                         {phase.studentTasks.map((task, idx) => (
                           <div key={idx} className="flex items-start gap-2 text-xs text-slate-700">
-                            <span className="text-blue-600 font-bold">›</span>
-                            <span>{task}</span>
+                            <span className="font-bold text-blue-700 bg-blue-100/70 px-1.5 py-0.2 rounded text-[10px] shrink-0">
+                              {phase.phaseNumber}.{idx + 1}
+                            </span>
+                            <span className="leading-relaxed">{task}</span>
                           </div>
                         ))}
                       </div>
 
                       {/* Output expected */}
                       <div className="flex flex-wrap items-center gap-2 pt-1 text-[11px]">
-                        <span className="font-semibold text-slate-500">Sản phẩm đầu ra:</span>
+                        <span className="font-semibold text-slate-500">Sản phẩm đầu ra cần có:</span>
                         {phase.suggestedOutputs.map((out, idx) => (
                           <span 
                             key={idx}
-                            className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded border border-slate-200"
+                            className="bg-slate-100 text-slate-700 font-medium px-2 py-0.5 rounded border border-slate-200"
                           >
                             {out}
                           </span>

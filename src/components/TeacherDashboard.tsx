@@ -22,7 +22,9 @@ import {
   Folder,
   Lock,
   Unlock,
-  X
+  X,
+  Copy,
+  Sparkles
 } from 'lucide-react';
 
 import { AuthUser, TEACHER_EMAIL } from '../types';
@@ -34,6 +36,8 @@ import {
   exportClassGoogleSheetCSV 
 } from '../services/googleDriveWorkspace';
 import { toggleTeamLock } from '../services/storage';
+import { GoogleSignInButton } from './GoogleSignInButton';
+import { loginTeacherQuick } from '../services/auth';
 
 interface TeacherDashboardProps {
   teams: Team[];
@@ -66,6 +70,13 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
   const [teacherName, setTeacherName] = useState<string>(
     currentUser?.email ? `${currentUser.name} (${currentUser.email})` : `Thầy Hoàng (${TEACHER_EMAIL})`
   );
+
+  // Delete Confirmation Modal State
+  const [teamToDelete, setTeamToDelete] = useState<Team | null>(null);
+
+  // Apps Script Helper Modal State
+  const [isScriptModalOpen, setIsScriptModalOpen] = useState<boolean>(false);
+  const [copiedScript, setCopiedScript] = useState<boolean>(false);
 
   // Filtered teams
   const filteredTeams = useMemo(() => {
@@ -138,10 +149,7 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
   };
 
   const handleDeleteTeam = (team: Team) => {
-    if (confirm(`Bạn có chắc chắn muốn xóa nhóm "${team.teamName}" (Lớp ${team.className})?`)) {
-      deleteTeam(team.id);
-      onRefreshTeams();
-    }
+    setTeamToDelete(team);
   };
 
   if (!isTeacher) {
@@ -162,17 +170,25 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
             </p>
             {currentUser && (
               <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-600">
-                Tài khoản Google hiện tại: <strong className="text-slate-900">{currentUser.email}</strong> (Vai trò: Học sinh)
+                Tài khoản Google hiện tại: <strong className="text-slate-900">{currentUser.email}</strong> (Vai trò: {currentUser.role === 'teacher' ? 'Giáo viên' : 'Học sinh'})
               </div>
             )}
           </div>
-          <div className="pt-2">
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <GoogleSignInButton
+              onClick={() => {
+                loginTeacherQuick();
+                onRefreshTeams();
+              }}
+              text="Sign in with Google"
+              subtext={TEACHER_EMAIL}
+              className="shadow-md"
+            />
             <button
               onClick={onOpenLoginModal}
-              className="px-6 py-2.5 bg-amber-600 hover:bg-amber-700 active:scale-95 text-white text-xs font-bold rounded-xl shadow-sm transition-all inline-flex items-center gap-2"
+              className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 border border-slate-200 rounded-xl hover:bg-slate-50 transition-colors"
             >
-              <ShieldCheck className="w-4 h-4" />
-              <span>Đăng nhập với {TEACHER_EMAIL}</span>
+              Chọn tài khoản khác
             </button>
           </div>
         </div>
@@ -211,6 +227,16 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
               <span>Thư mục Tổng Khối 9 (Google Drive)</span>
               <ExternalLink className="w-3 h-3 text-white/80" />
             </a>
+
+            {/* Google Apps Script 21 Class Folders Auto-Creator */}
+            <button
+              onClick={() => setIsScriptModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-purple-800 bg-purple-50 border border-purple-200 hover:bg-purple-100 rounded-xl shadow-xs transition-colors"
+              title="Tự động tạo 21 thư mục lớp (9A1 - 9A22) trong Drive của Thầy Hoàng"
+            >
+              <Sparkles className="w-4 h-4 text-purple-600" />
+              <span>Tạo 21 Folder Lớp (Apps Script)</span>
+            </button>
 
             {/* Class Google Sheet Export */}
             <button
@@ -600,6 +626,205 @@ export const TeacherDashboard: React.FC<TeacherDashboardProps> = ({
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {teamToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-150">
+          <div className="w-full max-w-md bg-white rounded-3xl p-6 shadow-2xl border border-slate-200 space-y-4 animate-in zoom-in-95 duration-150">
+            <div className="flex items-center gap-3">
+              <div className="w-11 h-11 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center border border-rose-100 shrink-0">
+                <Trash2 className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="font-bold text-slate-900 text-base">Xác nhận Xóa Nhóm</h3>
+                <p className="text-xs text-slate-500">Hành động này sẽ xóa vĩnh viễn nhóm khỏi hệ thống</p>
+              </div>
+            </div>
+
+            <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs space-y-2 text-slate-700">
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500">Tên nhóm:</span>
+                <strong className="text-slate-900 text-right truncate max-w-[220px]">{teamToDelete.teamName}</strong>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500">Lớp:</span>
+                <span className="font-bold text-blue-700 bg-blue-50 border border-blue-200 px-2 py-0.5 rounded">
+                  {teamToDelete.className}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500">Mã nhóm:</span>
+                <span className="font-mono text-slate-800 bg-white px-1.5 py-0.5 rounded border border-slate-200">{teamToDelete.teamCode}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500">Học sinh:</span>
+                <span className="text-slate-800 text-right truncate max-w-[220px]">
+                  {teamToDelete.members.map(m => m.name).join(', ')}
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-2.5 pt-2">
+              <button
+                type="button"
+                onClick={() => setTeamToDelete(null)}
+                className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
+              >
+                Hủy bỏ
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  deleteTeam(teamToDelete.id);
+                  onRefreshTeams();
+                  setTeamToDelete(null);
+                }}
+                className="px-4 py-2 text-xs font-bold text-white bg-rose-600 hover:bg-rose-700 active:scale-95 rounded-xl shadow-xs transition-all flex items-center gap-1.5"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>Xóa Nhóm Này</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Google Apps Script 21 Class Folders Modal */}
+      {isScriptModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-150">
+          <div className="w-full max-w-2xl bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-slate-200 space-y-5 animate-in zoom-in-95 duration-150 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center border border-purple-100 shrink-0">
+                  <Sparkles className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="font-extrabold text-slate-900 text-lg">
+                    Tự Động Tạo 21 Thư Mục Lớp Bằng Google Apps Script
+                  </h3>
+                  <p className="text-xs text-slate-500">
+                    Dành riêng cho Google Workspace Vinschool ({TEACHER_EMAIL})
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsScriptModalOpen(false)}
+                className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-4 bg-amber-50/80 border border-amber-200 rounded-2xl text-xs text-amber-900 space-y-2">
+              <p className="font-semibold text-amber-950 flex items-center gap-1.5">
+                <span>🔒</span> Tại sao dùng Google Apps Script thay vì can thiệp ngầm?
+              </p>
+              <p className="leading-relaxed">
+                Tài khoản Google Workspace của nhà trường Vinschool có lớp bảo mật dữ liệu học sinh nghiêm ngặt, ngăn chặn ứng dụng web bên ngoài tự ý can thiệp ngầm nếu không chạy từ chính phiên đăng nhập của Thầy. Sử dụng đoạn mã Google Apps Script 10 giây dưới đây là phương thức chính thống và an toàn nhất để Google Drive tự động tạo đủ <strong>21 thư mục lớp (9A1 - 9A22, bỏ 9A13)</strong> nằm chính xác trong Thư mục tổng <strong>1GVFf5vXNRCtf06lC0ZueBYi3cXCR3hRh</strong>.
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-700">Mã kịch bản Google Apps Script (Sẵn sàng chạy):</span>
+                <button
+                  onClick={() => {
+                    const scriptCode = `/**
+ * TỰ ĐỘNG TẠO 21 THƯ MỤC LỚP (9A1 - 9A22) TRONG THƯ MỤC TỔNG KHỐI 9
+ * Tài khoản giáo viên: v.hoangnh70@vinschool.edu.vn
+ */
+function createGrade9ClassFolders() {
+  var masterFolderId = "1GVFf5vXNRCtf06lC0ZueBYi3cXCR3hRh";
+  var masterFolder = DriveApp.getFolderById(masterFolderId);
+  
+  var classList = [
+    "9A1", "9A2", "9A3", "9A4", "9A5", "9A6", "9A7", "9A8", "9A9", "9A10", 
+    "9A11", "9A12", "9A14", "9A15", "9A16", "9A17", "9A18", "9A19", "9A20", 
+    "9A21", "9A22"
+  ];
+  
+  Logger.log("Bắt đầu tạo 21 thư mục lớp...");
+  
+  for (var i = 0; i < classList.length; i++) {
+    var className = classList[i];
+    var folderName = "[Khối 9] Lớp " + className;
+    
+    var existing = masterFolder.getFoldersByName(folderName);
+    if (existing.hasNext()) {
+      Logger.log("Đã có sẵn: " + folderName);
+    } else {
+      var newFolder = masterFolder.createFolder(folderName);
+      Logger.log("Đã tạo mới: " + folderName);
+    }
+  }
+  
+  Logger.log("==> Hoàn tất tạo 21 thư mục lớp thành công!");
+}`;
+                    navigator.clipboard.writeText(scriptCode);
+                    setCopiedScript(true);
+                    setTimeout(() => setCopiedScript(false), 3000);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-xl transition-all"
+                >
+                  {copiedScript ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                  <span>{copiedScript ? 'Đã sao chép mã!' : 'Sao chép đoạn mã'}</span>
+                </button>
+              </div>
+
+              <div className="bg-slate-900 rounded-2xl p-4 font-mono text-[11px] text-emerald-400 overflow-x-auto border border-slate-800 leading-relaxed max-h-52">
+                <pre>{`function createGrade9ClassFolders() {
+  var masterFolderId = "1GVFf5vXNRCtf06lC0ZueBYi3cXCR3hRh";
+  var masterFolder = DriveApp.getFolderById(masterFolderId);
+  
+  var classList = [
+    "9A1", "9A2", "9A3", "9A4", "9A5", "9A6", "9A7", "9A8", "9A9", "9A10", 
+    "9A11", "9A12", "9A14", "9A15", "9A16", "9A17", "9A18", "9A19", "9A20", 
+    "9A21", "9A22"
+  ];
+  
+  for (var i = 0; i < classList.length; i++) {
+    var folderName = "[Khối 9] Lớp " + classList[i];
+    var existing = masterFolder.getFoldersByName(folderName);
+    if (!existing.hasNext()) {
+      masterFolder.createFolder(folderName);
+    }
+  }
+}`}</pre>
+              </div>
+            </div>
+
+            {/* 3 Step Instruction */}
+            <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2 text-xs text-slate-700">
+              <div className="font-bold text-slate-900">3 Bước thực hiện (chỉ mất 30 giây):</div>
+              <ol className="list-decimal list-inside space-y-1.5 leading-relaxed">
+                <li>Bấm nút <strong>"Mở Google Apps Script"</strong> bên dưới (mở bằng tài khoản <em>{TEACHER_EMAIL}</em>).</li>
+                <li>Bấm <strong>"Dự án mới" (New project)</strong>, xóa mã mặc định và dán đoạn mã vừa sao chép vào.</li>
+                <li>Bấm biểu tượng <strong>"Chạy" (Run)</strong>. Toàn bộ 21 thư mục lớp sẽ lập tức xuất hiện trong Thư mục tổng Khối 9!</li>
+              </ol>
+            </div>
+
+            <div className="flex items-center justify-between pt-2">
+              <a
+                href="https://script.google.com/home/start"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 active:scale-95 rounded-xl shadow-xs transition-all"
+              >
+                <span>Mở Google Apps Script</span>
+                <ExternalLink className="w-3.5 h-3.5 text-white/80" />
+              </a>
+
+              <button
+                type="button"
+                onClick={() => setIsScriptModalOpen(false)}
+                className="px-5 py-2.5 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
+              >
+                Đóng
+              </button>
+            </div>
           </div>
         </div>
       )}

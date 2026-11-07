@@ -20,6 +20,7 @@ import {
 
 import { AuthUser } from '../types';
 import { AVAILABLE_CLASSES } from '../data/curriculum';
+import { GoogleSignInButton } from './GoogleSignInButton';
 
 interface StudentHomeViewProps {
   teams: Team[];
@@ -90,7 +91,7 @@ export const StudentHomeView: React.FC<StudentHomeViewProps> = ({
           <div className="pt-4 flex flex-wrap items-center gap-3">
             <button
               onClick={onOpenRegisterModal}
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold shadow-lg shadow-blue-600/30 active:scale-95 transition-all"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold shadow-lg shadow-blue-600/30 active:scale-95 transition-all cursor-pointer"
             >
               <FolderPlus className="w-4 h-4" />
               <span>Đăng ký Nhóm mới ngay</span>
@@ -98,11 +99,40 @@ export const StudentHomeView: React.FC<StudentHomeViewProps> = ({
 
             <button
               onClick={() => onNavigateToGuides()}
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white text-sm font-semibold backdrop-blur-xs border border-white/15 transition-all"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white text-sm font-semibold backdrop-blur-xs border border-white/15 transition-all cursor-pointer"
             >
               <BookOpen className="w-4 h-4" />
               <span>Xem hướng dẫn 3 Chủ đề</span>
             </button>
+
+            {!currentUser ? (
+              <GoogleSignInButton
+                onClick={onOpenLoginModal}
+                text="Sign in with Google"
+                subtext="Vinschool / Gmail"
+                className="py-1 shadow-md hover:scale-[1.02]"
+              />
+            ) : (
+              <div 
+                onClick={onOpenLoginModal}
+                className="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-white/10 hover:bg-white/15 border border-white/20 text-xs cursor-pointer transition-colors"
+                title="Bấm để đổi tài khoản Google"
+              >
+                <img 
+                  src={currentUser.avatar} 
+                  alt={currentUser.name} 
+                  className="w-5 h-5 rounded-md object-cover bg-white shrink-0" 
+                />
+                <span className="text-white font-medium truncate max-w-[130px]">
+                  {currentUser.name}
+                </span>
+                <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded shrink-0 ${
+                  currentUser.role === 'teacher' ? 'bg-amber-400 text-slate-900' : 'bg-blue-300 text-slate-900'
+                }`}>
+                  {currentUser.role === 'teacher' ? 'GV' : 'HS'}
+                </span>
+              </div>
+            )}
           </div>
         </div>
 

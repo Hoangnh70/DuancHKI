@@ -1,6 +1,7 @@
 import { AuthUser, TEACHER_EMAIL } from '../types';
 
 const AUTH_STORAGE_KEY = 'k9_ai_auth_user_v2';
+const AUTH_LOGGED_OUT_KEY = 'k9_ai_auth_logged_out';
 const AUTH_EVENT_NAME = 'k9_auth_updated';
 
 // Google Client ID for Google Identity Services (GIS)
@@ -35,10 +36,15 @@ export function parseGoogleJwt(token: string): { email: string; name?: string; p
 
 /**
  * Get the currently authenticated user from localStorage,
- * or automatically sync with Google session if not yet initialized.
+ * or automatically sync with default Google session if not yet initialized.
  */
-export function getCurrentUser(): AuthUser {
+export function getCurrentUser(): AuthUser | null {
   try {
+    const isLoggedOut = localStorage.getItem(AUTH_LOGGED_OUT_KEY) === 'true';
+    if (isLoggedOut) {
+      return null;
+    }
+
     const raw = localStorage.getItem(AUTH_STORAGE_KEY);
     if (raw) {
       const parsed: AuthUser = JSON.parse(raw);
@@ -54,10 +60,9 @@ export function getCurrentUser(): AuthUser {
     console.error('Error reading auth user from storage:', error);
   }
 
-  // Automatic default sync with Google active session:
-  // In this session, the active Google account is v.hoangnh70@vinschool.edu.vn
+  // Automatic default sync with Google active session for Teacher if first visit:
   const defaultUser: AuthUser = {
-    id: `user-google-${Date.now()}`,
+    id: `user-google-teacher`,
     email: TEACHER_EMAIL,
     name: 'Thầy Hoàng (GV Tin học - AI)',
     avatar: `https://api.dicebear.com/7.x/notionists/svg?seed=${encodeURIComponent(TEACHER_EMAIL)}`,
@@ -71,8 +76,10 @@ export function setCurrentUser(user: AuthUser | null): void {
   try {
     if (user) {
       localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(user));
+      localStorage.removeItem(AUTH_LOGGED_OUT_KEY);
     } else {
       localStorage.removeItem(AUTH_STORAGE_KEY);
+      localStorage.setItem(AUTH_LOGGED_OUT_KEY, 'true');
     }
     window.dispatchEvent(new CustomEvent(AUTH_EVENT_NAME, { detail: user }));
   } catch (error) {
